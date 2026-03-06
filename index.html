@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Catch the Box Game</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    background:#222;
+    color:white;
+}
+
+#gameArea{
+    width:600px;
+    height:400px;
+    border:3px solid white;
+    margin:20px auto;
+    position:relative;
+    background:#333;
+}
+
+#box{
+    width:50px;
+    height:50px;
+    background:red;
+    position:absolute;
+    cursor:pointer;
+}
+
+button{
+    padding:10px 20px;
+    font-size:18px;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+#score, #time{
+    font-size:20px;
+    margin:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Catch the Box 🎯</h1>
+
+<div id="score">Score: 0</div>
+<div id="time">Time: 30</div>
+
+<div id="gameArea">
+    <div id="box"></div>
+</div>
+
+<button onclick="startGame()">Start Game</button>
+
+<script>
+
+let score = 0;
+let timeLeft = 30;
+let gameInterval;
+let timerInterval;
+
+const box = document.getElementById("box");
+const gameArea = document.getElementById("gameArea");
+
+function moveBox(){
+
+    const maxX = gameArea.clientWidth - box.clientWidth;
+    const maxY = gameArea.clientHeight - box.clientHeight;
+
+    const randomX = Math.floor(Math.random()*maxX);
+    const randomY = Math.floor(Math.random()*maxY);
+
+    box.style.left = randomX + "px";
+    box.style.top = randomY + "px";
+}
+
+box.addEventListener("click", function(){
+
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    moveBox();
+});
+
+function startGame(){
+
+    score = 0;
+    timeLeft = 30;
+
+    document.getElementById("score").textContent = "Score: 0";
+    document.getElementById("time").textContent = "Time: 30";
+
+    moveBox();
+
+    gameInterval = setInterval(moveBox, 800);
+
+    timerInterval = setInterval(function(){
+
+        timeLeft--;
+        document.getElementById("time").textContent = "Time: " + timeLeft;
+
+        if(timeLeft <= 0){
+
+            clearInterval(gameInterval);
+            clearInterval(timerInterval);
+
+            alert("Game Over! Your score: " + score);
+        }
+
+    },1000);
+
+}
+
+</script>
+
+</body>
+</html>
